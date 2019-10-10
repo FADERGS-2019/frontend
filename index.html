@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/styles/normalize.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <title>Web Pizzas</title>
+</head>
+
+<body>
+    <div id="app">
+        <header class="header header--dark">
+            <nav>
+                <a href="#" class="button" @click="goBack" v-if="canGoBack">
+                    <i class="far fa-arrow-left"></i>
+                </a>
+            </nav>
+            <div>
+                <span>Título</span>
+                <small class="is-muted">Subtitulo</small>
+            </div>
+            <nav>
+                <a href="#" class="button">
+                    <i class="far fa-shopping-basket"></i>
+                </a>
+            </nav>
+        </header>
+
+        <div style="padding: 2em; padding-top: 6em;">
+            <router-view></router-view>
+        </div>
+
+
+        <!-- <nav>
+            <router-link to="/inicio">Inicio</router-link>
+            <router-link to="/sobre">Sobre</router-link>
+        </nav>
+        <router-view></router-view> -->
+    </div>
+
+    <script type="text/x-template" id="app-card-template">
+        <div class="card">
+            <div v-if="featured" class="card__featured" style="min-height: 14em;">
+                <img :src="featured" alt="" class="image image--rounded">
+            </div>
+            <div class="card__content">
+                <slot></slot>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="app-counter-template">
+        <div class="counter">
+            <button class="button button--circle" @click="add">
+                <i class="far fa-plus"></i>  
+            </button>
+            <div class="counter__inner">{{ value }}</div>
+            <button class="button button--circle" @click="remove">
+                <i class="far fa-minus"></i>  
+            </button>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="app-flavour-card-template">
+        <div class="card">        
+            <div class="card__content">
+                <div class="content__inner" style="flex-">
+                    <div>
+                        <h2 class="heading">{{ name }}</h2>
+                        <p>{{ description }}</p>                            
+                    </div>
+                    <div>
+                        <app-counter :value="amount" step="1" @add="add" @remove="remove"></app-counter>
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="start-page-template">
+        <main>
+            <app-card featured="/static/images/sample.jpg" @click.native="goFlavours">
+                <h2 class="heading">Personalizar</h2>
+                <p>Monte sua própria pizza, escolhendo tamanho, sabores e adicionais!</p>
+            </app-card>
+            
+            <app-card featured="/static/images/sample.jpg" @click.native="goCombos">
+                <h2 class="heading">Combos</h2>
+                <p>Escolha uma combinação de tamanho e adicionais na medida certa!</p>
+            </app-card>
+        </main>
+    </script>
+
+    <script type="text/x-template" id="flavours-page-template">
+        <main>
+            <app-flavour-card name="Alho e Óleo" description="Molho, mussarela, alho e óleo, orégano." amount=10></app-flavour-card>
+        </main>
+    </script>
+
+    <script type="text/x-template" id="combos-page-template">
+        <main>
+            <app-card>
+                <div class="content__inner">
+                    <div>
+                        <h2 class="heading">Combo #1</h2>
+                        <p>Escolha uma combinação de tamanho e adicionais na medida certa!</p>
+                        <h3 class="heading">R$ 99,90</h3>
+                    </div>
+                    <div>
+                        <a class="button">
+                            <i class="far fa-arrow-right"></i>  
+                        </a>
+                    </div>
+                </div>    
+            </app-card>
+            <app-card>
+                <div class="content__inner">
+                    <div>
+                        <h2 class="heading">Combo #2</h2>
+                        <p>Escolha uma combinação de tamanho e adicionais na medida certa!</p>
+                        <h3 class="heading">R$ 99,90</h3>
+                    </div>
+                    <div>
+                        <a class="button">
+                            <i class="far fa-arrow-right"></i>  
+                        </a>
+                    </div>
+                </div>    
+            </app-card>
+        </main>
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+    <!-- <script src="/static/vendor/vue/vue.js"></script>
+    <script src="/static/vendor/vue/vue-router.js"></script> -->
+    <script src="/static/scripts/lib.js"></script>
+    <script src="/static/scripts/main.js"></script>
+
+</body>
+
+</html>
