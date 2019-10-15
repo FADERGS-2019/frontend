@@ -1,0 +1,24 @@
+{
+  "name": "web-pizza-frontend-app",
+  "version": "1.0.0",
+  "description": "Essa aplicação serve como front-end do software de gerenciamento de pedidos de pizzas, desenvolvido para a cadeira de Engenharia de Software II na FADERGS no ano de 2019.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FADERGS-2019/frontend.git"
+  },
+  "author": "Gabriel Schneider <gabriel.schneider.almeida@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FADERGS-2019/frontend/issues"
+  },
+  "homepage": "https://github.com/FADERGS-2019/frontend#readme",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^1.19.3"
+  }
+}
