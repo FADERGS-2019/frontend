@@ -1,27 +1,4 @@
-const StartPage = { 
-    template: '#start-page-template',
-    methods: {
-        goFlavours: function() {
-            // console.log('Hello from start page!');
-            this.$router.push('/sabores');
-        },
-        goCombos: function() {
-            this.$router.push('/combos');
-        }
-    }
-};
-const FlavoursPage = { template: '#flavours-page-template' };
-const CombosPage = { template: '#combos-page-template' };
 
-const routes = [
-    { path: '/', component: StartPage },
-    { path: '/sabores', component: FlavoursPage },
-    { path: '/combos', component: CombosPage },
-];
-
-const router = new VueRouter({
-    routes
-});
 
 Vue.component('app-card', {
     template: '#app-card-template',
@@ -33,7 +10,7 @@ Vue.component('app-flavour-card', {
     props: ['name', 'description', 'amount'],
     data: function() {
         return {
-            // _amount: this.amount
+
         }
     },
     methods: {
@@ -49,6 +26,21 @@ Vue.component('app-flavour-card', {
     //         return this.amount
     //     }
     // }
+});
+
+Vue.component('app-size-card', {
+    template: '#app-size-card-template',
+    props: ['name', 'description', 'radius', 'price', 'selected'],
+    data: function() {
+        return {
+
+        }
+    },
+    computed: {
+        formattedPrice: function() {
+            return `R$ ${this.price.toFixed(2)}`;
+        }
+    }
 });
 
 Vue.component('app-counter', {
@@ -70,7 +62,9 @@ Vue.component('app-counter', {
 
 const app = new Vue({
     el: '#app',
-    data: {       
+    store,
+    data: {
+       
     },
     router: router,
     computed: {

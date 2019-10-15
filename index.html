@@ -30,9 +30,12 @@
             </nav>
         </header>
 
-        <div style="padding: 2em; padding-top: 6em;">
+        <div style="padding: 2em; padding-top: 6em; margin-bottom: 4em;">
             <router-view></router-view>
         </div>
+        <footer>
+            <router-view name="footer"></router-view>
+        </footer>
 
 
         <!-- <nav>
@@ -81,9 +84,28 @@
         </div>
     </script>
 
+    <script type="text/x-template" id="app-size-card-template">
+        <div class="card" style="cursor: pointer">        
+            <div class="card__content">
+                <div class="content__inner">
+                    <div>
+                        <h2 class="heading">{{ name }}</h2>
+                        <p>{{ radius }}cm</p>                            
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <h3 class="heading" style="margin-right: 1em;">{{ formattedPrice }}</h3>
+                        <div class="radiobutton" :class="{'is-selected': selected }" style="font-size: 1.5em"></div>                        
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </script>
+
+    <!-- Pages -->
+
     <script type="text/x-template" id="start-page-template">
         <main>
-            <app-card featured="/static/images/sample.jpg" @click.native="goFlavours">
+            <app-card featured="/static/images/sample.jpg" @click.native="goSizes">
                 <h2 class="heading">Personalizar</h2>
                 <p>Monte sua própria pizza, escolhendo tamanho, sabores e adicionais!</p>
             </app-card>
@@ -95,9 +117,53 @@
         </main>
     </script>
 
+    <script type="text/x-template" id="sizes-page-template">
+        <main>
+            <div>                           
+                <!-- Size visualization here! -->
+            </div>
+            <div>
+                <app-size-card 
+                    v-for="size in $store.getters.sizes" 
+                    :key="size.radius" 
+                    :name="size.name" 
+                    :radius="size.radius" 
+                    :price="size.price"
+                    :selected="isSelected(size)" 
+                    @click.native="selectSize(size)"
+                >
+                </app-size-card>
+            </div>
+            <footer class="footer">
+                <button class="button button--solid">Continuar</button>
+            </footer>
+        </main>
+    </script>
+
+    <script type="text/x-template" id="sizes-page-footer-template">
+        <button class="button button--solid" style="margin: 0 auto" :disabled="canContinue" @click="continueProcess">Continuar</button>
+    </script>
+
+    <script type="text/x-template" id="flavours-amount-page-template">
+        <main style="text-align: center">            
+            <h3>Quantos sabores você deseja?</h3>
+            <app-counter step="1" :value="amountOfFlavours" @add="add" @remove="remove"></app-counter>            
+        </main>     
+    </script>
+
+    <script type="text/x-template" id="flavours-amount-footer-template">        
+        <button class="button button--solid" style="margin: 0 auto" @click="continueProcess">Continuar</button>        
+    </script>
+
     <script type="text/x-template" id="flavours-page-template">
         <main>
-            <app-flavour-card name="Alho e Óleo" description="Molho, mussarela, alho e óleo, orégano." amount=10></app-flavour-card>
+            <app-flavour-card 
+                v-for="flavour in $store.state.flavours"
+                :name="flavour.name" 
+                :description="flavour.description"
+                :key="flavour.name" 
+                amount=10>
+            </app-flavour-card>
         </main>
     </script>
 
@@ -134,11 +200,13 @@
         </main>
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
-    <!-- <script src="/static/vendor/vue/vue.js"></script>
-    <script src="/static/vendor/vue/vue-router.js"></script> -->
+    <script src="https://unpkg.com/vuex@3.1.1/dist/vuex.js"></script>
+    <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>    
     <script src="/static/scripts/lib.js"></script>
+    <script src="/static/scripts/state.js"></script>
+    <script src="/static/scripts/routes.js"></script>
     <script src="/static/scripts/main.js"></script>
 
 </body>
