@@ -170,7 +170,6 @@ const PaymentPage = {
     template: '#payment-page-template',
     data: function() {
         return {
-            changeFor: 0
         }
     },
     methods: {
@@ -182,6 +181,14 @@ const PaymentPage = {
         selectedMethod: function() {
             const payment = this.$store.getters.payment;
             return payment.method;
+        },
+        changeFor: {
+            get: function() {
+                this.$store.getters.changeFor;
+            },
+            set: function(value) {
+                this.$store.dispatch('setChangeFor', value);
+            }
         }
     }
 };

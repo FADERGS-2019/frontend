@@ -250,13 +250,17 @@
                 :selected="selectedMethod == 'money'"
                 @click.native="selectMethod('money')"
             />
+            <div v-if="selectedMethod == 'money'" class="field">            
+                    <label class="field__label" for="">Precisa de troco?</label>
+                    <input class="field__input" type="text" v-model="changeFor" placeholder="100,00"/>
+                </div>
         </main>
     </script>
 
     <script type="text/x-template" id="payment-footer-template">
         <div style="margin: 0 auto">
             <button type="submit" form="payment-form" class="button button--solid">Pagar e Finalizar</button>
-        </div>            
+        </div>
     </script>
 
     <script type="text/x-template" id="combos-page-template">

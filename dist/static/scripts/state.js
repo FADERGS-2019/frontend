@@ -29,6 +29,9 @@ const store = new Vuex.Store({
         },
         setPaymentMethod: function(state, method) {
             state.payment.method = method;
+        },
+        setChangeFor: function(state, value) {
+            state.payment.changeFor = value;
         }
     },
     actions: {
@@ -145,6 +148,11 @@ const store = new Vuex.Store({
         setPaymentMethod: function(context, method) {
             if (_.includes(['card', 'money'], method)) {
                 context.commit('setPaymentMethod', method);
+            }
+        },
+        setChangeFor: function(context, value) {
+            if (value > 0) {
+                context.commit('setChangeFor', value);
             }
         }
     },
