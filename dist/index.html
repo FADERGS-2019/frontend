@@ -96,6 +96,22 @@
         </div>
     </script>
 
+    <script type="text/x-template" id="app-payment-card-template">
+        <div class="card" style="cursor: pointer">        
+            <div class="card__content">
+                <div class="content__inner">
+                    <div>
+                        <h2 class="heading">{{ name }}</h2>
+                        <p>{{ description }}</p>                            
+                    </div>
+                    <div style="display: flex; align-items: center;">                        
+                        <div class="radiobutton" :class="{'is-selected': selected }" style="font-size: 1.5em"></div>                        
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </script>
+
     <!-- Pages -->
 
     <script type="text/x-template" id="start-page-template">
@@ -217,6 +233,29 @@
     <script type="text/x-template" id="delivery-footer-template">
         <div style="margin: 0 auto">
             <button type="submit" form="delivery-form" class="button button--solid">Ir para Pagamento</button>
+        </div>            
+    </script>
+
+    <script type="text/x-template" id="payment-page-template">
+        <main>                        
+            <app-payment-card 
+                name="Cartão de Crédito/Débito" 
+                description="Levamos a máquininha até você para efetuar o pagamento atráves de cartão."
+                :selected="selectedMethod == 'card'"
+                @click.native="selectMethod('card')"
+            />
+            <app-payment-card 
+                name="Dinheiro" 
+                description="Pague com dinheiro em espécie e informe o troco se necessário."
+                :selected="selectedMethod == 'money'"
+                @click.native="selectMethod('money')"
+            />
+        </main>
+    </script>
+
+    <script type="text/x-template" id="payment-footer-template">
+        <div style="margin: 0 auto">
+            <button type="submit" form="payment-form" class="button button--solid">Pagar e Finalizar</button>
         </div>            
     </script>
 

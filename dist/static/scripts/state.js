@@ -4,7 +4,12 @@ const store = new Vuex.Store({
         availableFlavours: [],
         lastPizzaId: 0,
         pizzas: [],
-        current: {}        
+        current: {},
+        payment: {
+            method: '',
+            cardType: '',
+            changeFor: 0
+        }    
     },
     mutations: {
         setAvailableSizes: function(state, sizes) {
@@ -21,6 +26,9 @@ const store = new Vuex.Store({
         },
         setPizzas: function(state, pizzas) {
             state.pizzas = pizzas;
+        },
+        setPaymentMethod: function(state, method) {
+            state.payment.method = method;
         }
     },
     actions: {
@@ -133,6 +141,11 @@ const store = new Vuex.Store({
             if (pizza.flavours[payload.name] != amount) {
                 context.commit('setPizza', pizza);
             }
+        },
+        setPaymentMethod: function(context, method) {
+            if (_.includes(['card', 'money'], method)) {
+                context.commit('setPaymentMethod', method);
+            }
         }
     },
     getters: {
@@ -144,6 +157,7 @@ const store = new Vuex.Store({
                 return 0;
             }
             return Object.values(state.current.flavours).reduce((previous, obj) => previous + obj , 0)
-        }
+        },
+        payment: (state) => state.payment
     }
 })

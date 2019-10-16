@@ -166,6 +166,27 @@ const DeliveryFooter = {
     }
 };
 
+const PaymentPage = { 
+    template: '#payment-page-template',
+    data: function() {
+        return {
+            changeFor: 0
+        }
+    },
+    methods: {
+        selectMethod: function(method) {
+            this.$store.dispatch('setPaymentMethod', method);
+        }
+    },
+    computed: {
+        selectedMethod: function() {
+            const payment = this.$store.getters.payment;
+            return payment.method;
+        }
+    }
+};
+const PaymentFooter = { template: '#payment-footer-template' };
+
 const CombosPage = { template: '#combos-page-template' };
 
 
@@ -209,6 +230,13 @@ const routes = [
         components: {
             default: DeliveryPage,
             footer: DeliveryFooter
+        }
+    },
+    {
+        path: '/pagamento',
+        components: {
+            default: PaymentPage,
+            footer: PaymentFooter
         }
     },
     {

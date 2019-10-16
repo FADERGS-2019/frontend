@@ -66,6 +66,16 @@ Vue.component('app-counter', {
     }
 });
 
+Vue.component('app-payment-card', {
+    template: '#app-payment-card-template',
+    props: ['name', 'description', 'selected'],
+    data: function() {
+        return {
+
+        }
+    }
+});
+
 const app = new Vue({
     el: '#app',
     store,
