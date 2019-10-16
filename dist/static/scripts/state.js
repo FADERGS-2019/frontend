@@ -3,7 +3,7 @@ const store = new Vuex.Store({
         availableSizes: [],      
         availableFlavours: [],
         pizzas: [],
-        current: {}
+        current: {}        
     },
     mutations: {
         setAvailableSizes: function(state, sizes) {
@@ -74,7 +74,8 @@ const store = new Vuex.Store({
         clearPizza: function(context) {
             const emptyPizza = {
                 flavours: {},
-                size: null
+                size: null,
+                maxFlavours: 1
             };
             context.commit('setPizza', emptyPizza);
         },
@@ -83,23 +84,41 @@ const store = new Vuex.Store({
             pizza.size = size;            
             context.commit('setPizza', pizza);
         },
-        incrementFlavour: function(context, payload)  {
+        setFlavourMaxAmount: function(context, maxAmount) {
             const pizza = _.clone(this.getters.currentPizza, isDeep=true);
-            
+            pizza.maxFlavours = _.clamp(maxAmount, 1, 4);
+            context.commit('setPizza', pizza);                      
+        },
+        incrementFlavour: function(context, payload)  {
+            const pizza = _.clone(this.getters.currentPizza, isDeep=true);            
             if (payload.name in pizza.flavours === false) {
-                pizza.flavours[payload.name] = parseInt(payload.amount);
-            } else {
-                pizza.flavours[payload.name] += parseInt(payload.amount);
+                pizza.flavours[payload.name] = 0
             }
-            context.commit('setPizza', pizza);
+
+            const maxStep = pizza.maxFlavours - this.getters.flavoursCount;
+            let step = _.clamp(payload.amount, maxStep * -1, maxStep);
+            let amount = pizza.flavours[payload.name];
+            pizza.flavours[payload.name] = _.clamp(amount + step, 0, pizza.maxFlavours);
+            context.commit('setPizza', pizza);            
         },
         decrementFlavour: function(context, payload)  {
-            console.log(payload);
+            const pizza = _.clone(this.getters.currentPizza, isDeep=true);            
+            if (payload.name in pizza.flavours === false) {
+                pizza.flavours[payload.name] = 0;
+            }
+            
+            let amount = pizza.flavours[payload.name];             
+            pizza.flavours[payload.name] = _.clamp(amount - payload.amount, 0, pizza.maxFlavours);
+
+            context.commit('setPizza', pizza);
         }
     },
     getters: {
         availableFlavours: (state) => state.availableFlavours,
         availableSizes: (state) => state.availableSizes,                    
-        currentPizza: (state) => state.current        
+        currentPizza: (state) => state.current,
+        flavoursCount: (state) => Object.values(state.current.flavours).reduce(
+            (previous, obj) => previous + obj
+        , 0)
     }
 })

@@ -75,12 +75,12 @@ const FlavoursAmountPage = {
             this.changeAmountOfFlavours(event.amount * -1);
         },
         changeAmountOfFlavours: function(amount) {
-            this.amountOfFlavours += amount;
-            this.amountOfFlavours = Math.min(4, Math.max(this.amountOfFlavours, 1));
+            const maxFlavours = this.$store.getters.currentPizza.maxFlavours;
+            this.$store.dispatch('setFlavourMaxAmount', maxFlavours + amount);             
         }     
     },
     mounted: function() {
-        this.$store.dispatch('getFlavours');   
+          
     }
 };
 

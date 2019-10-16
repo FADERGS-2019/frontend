@@ -142,7 +142,7 @@
     <script type="text/x-template" id="flavours-amount-page-template">
         <main style="text-align: center">            
             <h3>Quantos sabores você deseja?</h3>
-            <app-counter step="1" :value="amountOfFlavours" @add="add" @remove="remove"></app-counter>            
+            <app-counter step="1" :value="$store.getters.currentPizza.maxFlavours" @add="add" @remove="remove"></app-counter>            
         </main>     
     </script>
 
