@@ -60,6 +60,23 @@ const FlavoursPage = {
     }
 };
 
+const FlavoursFooter = {
+    template: '#flavours-footer-template',
+    methods: {
+        continueProcess: function() {
+            this.$store.dispatch('savePizza');
+            this.$store.dispatch('clearPizza');
+            this.$router.push('/pizza-adicionada');
+        }        
+    },
+    computed: {
+        canContinue: function() {
+            return this.$store.getters.flavoursCount > 0;
+        }
+    }
+};
+
+
 const FlavoursAmountPage = { 
     template: '#flavours-amount-page-template',
     data: function() {
@@ -93,6 +110,62 @@ const FlavoursAmountFooter = {
     }
 };
 
+const PostBuildPage = { 
+    template: '#post-build-page-template',
+};
+
+const PostBuildFooter = {
+    template: '#post-build-footer-template',
+    methods: {
+        goDelivery: function() {
+            this.$router.push('/entrega');
+        },
+        goNewPizza: function() {
+            this.$router.push('/');
+        }
+    }
+};
+
+const DeliveryPage = { 
+    template: '#delivery-page-template',
+    data: function() {
+        return {
+            zipcode: '',
+            address: '',
+            number: '',
+            complement: '',
+            phone: ''
+        }
+    },
+    methods: {
+        validateForm: function(event) {
+            event.preventDefault();
+            const fields = [
+                this.zipcode,
+                this.address,
+                this.number,
+                this.complement,
+                this.phone
+            ];
+            const isValid = _.every(fields, (value) => !_.isEmpty(value));
+            
+            if (isValid) {
+                console.log("ok")
+                return true;
+            }
+            
+            console.log("nope")            
+            
+        }
+    }
+};
+
+const DeliveryFooter = {
+    template: '#delivery-footer-template',
+    methods: {
+    }
+};
+
 const CombosPage = { template: '#combos-page-template' };
 
 
@@ -120,8 +193,23 @@ const routes = [
     {
         path: '/sabores', 
         components: {
-            default: FlavoursPage
+            default: FlavoursPage,
+            footer: FlavoursFooter
         }  
+    },
+    {
+        path: '/pizza-adicionada',
+        components: {
+            default: PostBuildPage,
+            footer: PostBuildFooter
+        }
+    },
+    {
+        path: '/entrega',
+        components: {
+            default: DeliveryPage,
+            footer: DeliveryFooter
+        }
     },
     {
         path: '/combos', 

@@ -2,6 +2,7 @@ const store = new Vuex.Store({
     state: {
         availableSizes: [],      
         availableFlavours: [],
+        lastPizzaId: 0,
         pizzas: [],
         current: {}        
     },
@@ -14,6 +15,12 @@ const store = new Vuex.Store({
         },
         setPizza: function(state, pizza) {
             state.current = pizza;
+        },
+        setLastPizzaId: function(state, id) {
+            state.lastPizzaId = id;
+        },
+        setPizzas: function(state, pizzas) {
+            state.pizzas = pizzas;
         }
     },
     actions: {
@@ -72,12 +79,21 @@ const store = new Vuex.Store({
             context.commit('setAvailableFlavours', flavours);
         },
         clearPizza: function(context) {
+            const pizzaId = this.state.lastPizzaId + 1;
             const emptyPizza = {
+                id: pizzaId,
                 flavours: {},
                 size: null,
                 maxFlavours: 1
             };
+            context.commit('setLastPizzaId', pizzaId);
             context.commit('setPizza', emptyPizza);
+        },
+        savePizza: function(context) {
+            const pizza = _.clone(this.getters.currentPizza, isDeep=true); 
+            const pizzas = this.state.pizzas.filter((p) => p.id != pizza.id);
+            pizzas.push(pizza);
+            context.commit('setPizzas', pizzas);                        
         },
         setSize: function(context, size) {
             const pizza = _.clone(this.getters.currentPizza, isDeep=true);
@@ -99,7 +115,11 @@ const store = new Vuex.Store({
             let step = _.clamp(payload.amount, maxStep * -1, maxStep);
             let amount = pizza.flavours[payload.name];
             pizza.flavours[payload.name] = _.clamp(amount + step, 0, pizza.maxFlavours);
-            context.commit('setPizza', pizza);            
+
+            if (pizza.flavours[payload.name] != amount) {
+                context.commit('setPizza', pizza);
+            }
+            
         },
         decrementFlavour: function(context, payload)  {
             const pizza = _.clone(this.getters.currentPizza, isDeep=true);            
@@ -110,15 +130,20 @@ const store = new Vuex.Store({
             let amount = pizza.flavours[payload.name];             
             pizza.flavours[payload.name] = _.clamp(amount - payload.amount, 0, pizza.maxFlavours);
 
-            context.commit('setPizza', pizza);
+            if (pizza.flavours[payload.name] != amount) {
+                context.commit('setPizza', pizza);
+            }
         }
     },
     getters: {
         availableFlavours: (state) => state.availableFlavours,
         availableSizes: (state) => state.availableSizes,                    
         currentPizza: (state) => state.current,
-        flavoursCount: (state) => Object.values(state.current.flavours).reduce(
-            (previous, obj) => previous + obj
-        , 0)
+        flavoursCount: (state) => {
+            if (state.current.flavours == null) {
+                return 0;
+            }
+            return Object.values(state.current.flavours).reduce((previous, obj) => previous + obj , 0)
+        }
     }
 })

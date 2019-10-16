@@ -162,6 +162,64 @@
         </main>
     </script>
 
+    <script type="text/x-template" id="flavours-footer-template">        
+        <button class="button button--solid" style="margin: 0 auto" :disabled="!canContinue" @click="continueProcess">Continuar</button>        
+    </script>
+
+    <script type="text/x-template" id="post-build-page-template">
+        <main>            
+            <h3>Pizza adiciona!</h3>
+            <p>
+                Deseja adicionar mais uma pizza ao pedido?
+            </p>
+        </main>
+    </script>
+
+    <script type="text/x-template" id="post-build-footer-template">
+        <div style="margin: 0 auto">
+            <button class="button button--solid" @click="goNewPizza">Adicionar mais</button>
+            <button class="button button--solid" @click="goDelivery">Ir para entrega</button>
+        </div>            
+    </script>
+
+    <script type="text/x-template" id="delivery-page-template">
+        <main style="height: 100%; display: flex; flex-direction: column;">            
+            <form id="delivery-form" name="delivery-form" action="" style="flex-grow: 1" @submit="validateForm">
+                <div class="field">
+                    <label class="field__label" for="">CEP</label>
+                    <input type="text" class="field__input" v-model="zipcode" placeholder="90010-300"> 
+                </div>
+                <div class="field">
+                    <label class="field__label" for="">Endereço</label>
+                    <input type="text" class="field__input" v-model="address" placeholder="Rua Fernando Machado"> 
+                </div>
+                <div class="field">
+                    <label class="field__label" for="">Número</label>
+                    <input type="text" class="field__input" v-model="number" placeholder="27"> 
+                </div>
+                <div class="field">
+                    <label class="field__label" for="">Complemento</label>
+                    <input type="text" class="field__input" v-model="complement" placeholder="Apartamento 301"> 
+                </div>
+                <div class="field">
+                    <label class="field__label" for="">Contato</label>
+                    <input type="text" class="field__input" v-model="phone" placeholder="(51) 997304050"> 
+                </div>
+            </form>            
+            <div style="text-align: center;">
+                <span>Taxa de Entrega</span>
+                <h2>R$ 10,00</h2>
+            </div>
+            
+        </main>
+    </script>
+
+    <script type="text/x-template" id="delivery-footer-template">
+        <div style="margin: 0 auto">
+            <button type="submit" form="delivery-form" class="button button--solid">Ir para Pagamento</button>
+        </div>            
+    </script>
+
     <script type="text/x-template" id="combos-page-template">
         <main>
             <app-card>
