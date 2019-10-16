@@ -1,26 +1,23 @@
 const store = new Vuex.Store({
     state: {
-        sizes: [],
-        selectedSize: {},
-        flavours: [],
-        selectedFlavours: {
-
-        },
-        pizzas: []
+        availableSizes: [],      
+        availableFlavours: [],
+        pizzas: [],
+        current: {}
     },
     mutations: {
-        setSizes: function(state, sizes) {
-            state.sizes = sizes;
+        setAvailableSizes: function(state, sizes) {
+            state.availableSizes = sizes;
         },
-        setSelectedSize: function(state, size) {
-            state.selectedSize = size;
+        setAvailableFlavours: function(state, flavours) {
+            state.availableFlavours = flavours;
         },
-        setFlavours: function(state, flavours) {
-            state.flavours = flavours;
-        },
+        setPizza: function(state, pizza) {
+            state.current = pizza;
+        }
     },
     actions: {
-        getSizes: function(context) {
+        fetchSizes: function(context) {
             const sizes = 
             [
                 {
@@ -41,14 +38,10 @@ const store = new Vuex.Store({
             ];
             
             // Request sizes in API
-            context.commit('setSizes', sizes);
-            // setTimeout(() => context.commit('setSizes', sizes), 500);
+            context.commit('setAvailableSizes', sizes);            
             
         },
-        setSelectedSize: function(context, size) {
-            context.commit('setSelectedSize', size);
-        },
-        getFlavours: function(context) {
+        fetchFlavours: function(context) {
             const flavours = [
                 {
                     name: "Alho e Óleo",
@@ -76,13 +69,37 @@ const store = new Vuex.Store({
                 }
             ];
             // Request flavours in API
-            context.commit('setFlavours', flavours);
+            context.commit('setAvailableFlavours', flavours);
+        },
+        clearPizza: function(context) {
+            const emptyPizza = {
+                flavours: {},
+                size: null
+            };
+            context.commit('setPizza', emptyPizza);
+        },
+        setSize: function(context, size) {
+            const pizza = _.clone(this.getters.currentPizza, isDeep=true);
+            pizza.size = size;            
+            context.commit('setPizza', pizza);
+        },
+        incrementFlavour: function(context, payload)  {
+            const pizza = _.clone(this.getters.currentPizza, isDeep=true);
+            
+            if (payload.name in pizza.flavours === false) {
+                pizza.flavours[payload.name] = parseInt(payload.amount);
+            } else {
+                pizza.flavours[payload.name] += parseInt(payload.amount);
+            }
+            context.commit('setPizza', pizza);
+        },
+        decrementFlavour: function(context, payload)  {
+            console.log(payload);
         }
     },
     getters: {
-        sizes: (state) => state.sizes,
-        selectedSize: (state) => state.selectedSize,
-        flavours: (state) => state.flavours,
-        selectedFlavours: (state) => state.selectedFlavours        
+        availableFlavours: (state) => state.availableFlavours,
+        availableSizes: (state) => state.availableSizes,                    
+        currentPizza: (state) => state.current        
     }
 })

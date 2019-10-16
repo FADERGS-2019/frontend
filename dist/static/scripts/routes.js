@@ -22,32 +22,44 @@ const SizesPage = {
     },
     methods: {
         selectSize: function(size) {
-            this.$store.dispatch('setSelectedSize', size);
+            this.$store.dispatch('setSize', size);
         },
-        isSelected: function(size) {            
-            return (this.$store.state.selectedSize.name == size.name);
+        isSelected: function(size) {    
+            const currentSize = this.$store.getters.currentPizza.size;
+            return currentSize == null ? false : currentSize.name === size.name;            
         }
     },
     mounted: function()
     {
-        this.$store.dispatch('getSizes');   
+        // this.$store.dispatch('getSizes');   
     }
 };
 
 const SizePageFooter = { 
     template: '#sizes-page-footer-template',
     methods: {
-        continueProcess: function() {            
+        nextPage: function() {            
             this.$router.push('/quantidade-de-sabores');
         }
     },
     computed: {
         canContinue: function() {
-            return _.isEmpty(this.$store.state.selectedSize);
+            const currentPizza = this.$store.getters.currentPizza;
+            return currentPizza.size != null;            
         }
     }
 };
-const FlavoursPage = { template: '#flavours-page-template' };
+
+const FlavoursPage = {
+    template: '#flavours-page-template',
+    methods: {
+        currentFlavourAmount: function(flavourName) {
+            const currentPizza = this.$store.getters.currentPizza;            
+            return (flavourName in currentPizza.flavours) ? currentPizza.flavours[flavourName] : 0;
+        }
+    }
+};
+
 const FlavoursAmountPage = { 
     template: '#flavours-amount-page-template',
     data: function() {
@@ -71,6 +83,7 @@ const FlavoursAmountPage = {
         this.$store.dispatch('getFlavours');   
     }
 };
+
 const FlavoursAmountFooter = {
     template: '#flavours-amount-footer-template',
     methods: {
@@ -80,8 +93,8 @@ const FlavoursAmountFooter = {
     }
 };
 
-         
 const CombosPage = { template: '#combos-page-template' };
+
 
 const routes = [
     { 

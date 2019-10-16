@@ -14,11 +14,17 @@ Vue.component('app-flavour-card', {
         }
     },
     methods: {
-        add: function(event) {
-            this.amount = parseInt(this.amount) + event.amount;
+        onAdd: function(event) {
+            this.$store.dispatch('incrementFlavour', {
+                name: this.name,
+                amount: event.amount
+            });            
         },
-        remove: function(event) {
-            this.amount = parseInt(this.amount) - event.amount;
+        onRemove: function(event) {
+            this.$store.dispatch('decrementFlavour', {
+                name: this.name,
+                amount: event.amount
+            });            
         }
     },
     // computed: {
@@ -76,6 +82,12 @@ const app = new Vue({
         goBack: function() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
         }
+    },
+    mounted: function() {
+        this.$store.dispatch('fetchSizes');
+        this.$store.dispatch('fetchFlavours');
+        this.$store.dispatch('clearPizza');
+        console.log('Ready');
     }
 });
 

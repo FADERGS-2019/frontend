@@ -39,7 +39,7 @@
     </div>
 
     <!-- Components -->
-    
+
     <script type="text/x-template" id="app-card-template">
         <div class="card">
             <div v-if="featured" class="card__featured" style="min-height: 14em;">
@@ -72,7 +72,7 @@
                         <p>{{ description }}</p>                            
                     </div>
                     <div>
-                        <app-counter :value="amount" step="1" @add="add" @remove="remove"></app-counter>
+                        <app-counter :value="amount" step="1" @add="onAdd" @remove="onRemove"></app-counter>
                     </div>
                 </div>                  
             </div>
@@ -119,7 +119,7 @@
             </div>
             <div>
                 <app-size-card 
-                    v-for="size in $store.getters.sizes" 
+                    v-for="size in $store.getters.availableSizes" 
                     :key="size.radius" 
                     :name="size.name" 
                     :radius="size.radius" 
@@ -136,7 +136,7 @@
     </script>
 
     <script type="text/x-template" id="sizes-page-footer-template">
-        <button class="button button--solid" style="margin: 0 auto" :disabled="canContinue" @click="continueProcess">Continuar</button>
+        <button class="button button--solid" style="margin: 0 auto" :disabled="!canContinue" @click="nextPage">Continuar</button>
     </script>
 
     <script type="text/x-template" id="flavours-amount-page-template">
@@ -153,11 +153,11 @@
     <script type="text/x-template" id="flavours-page-template">
         <main>            
             <app-flavour-card 
-                v-for="flavour in $store.state.flavours"
+                v-for="flavour in $store.state.availableFlavours"
                 :name="flavour.name" 
                 :description="flavour.description"
                 :key="flavour.name" 
-                amount=10>
+                :amount="currentFlavourAmount(flavour.name)">
             </app-flavour-card>
         </main>
     </script>
