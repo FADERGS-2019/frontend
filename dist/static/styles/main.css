@@ -2,6 +2,9 @@
     --text-color: #333;    
     --button-primary-color: #333;
     --button-primary-color-disabled: #666;
+
+    --primary-color: #4062bb;
+    --secondary-color: #52489c;
 }
 
 *, *:before, *:after {
@@ -90,6 +93,7 @@ header > div {
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+    transition: width 100ms linear;
 }
 
 .button.button--solid {
@@ -254,4 +258,21 @@ input {
     min-width: 1px; 
     border: 2px solid lightgray;
 
+}
+
+.badge {
+    position: absolute;
+    
+    top: 0;
+    right: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 1.25em;
+    height: 1.25em;
+
+    border-radius: 50%;
+    background-color: var(--secondary-color);
 }

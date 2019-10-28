@@ -5,6 +5,12 @@ app.use(express.static('dist', {
   etag: false
 }));
 
+app.post('/api/order', (req, res) => {
+  res.json({
+    "status": "ok"
+  })
+});
+
 app.get('/*', (req, res) => {
     res.sendFile(__dirname + '/dist/index.html');
 })

@@ -1,5 +1,12 @@
+const vuexLocal = new window.VuexPersistence.VuexPersistence({
+    storage: window.localStorage
+});
+
 const store = new Vuex.Store({
+    plugins: [vuexLocal.plugin],
     state: {
+        title: '',
+        subtitle: '',
         availableSizes: [],      
         availableFlavours: [],
         lastPizzaId: 0,
@@ -32,9 +39,20 @@ const store = new Vuex.Store({
         },
         setChangeFor: function(state, value) {
             state.payment.changeFor = value;
+        },
+        setHeaderTitle: function(state, value) {
+            state.title = value;
+        },
+        setHeaderSubtitle: function(state, value) {
+            state.subtitle = value;
         }
     },
     actions: {
+        setHeader: function(context, data) {        
+            const { title, subtitle } = data   
+            context.commit('setHeaderTitle', title)
+            context.commit('setHeaderSubtitle', subtitle);
+        },
         fetchSizes: function(context) {
             const sizes = 
             [
@@ -88,6 +106,13 @@ const store = new Vuex.Store({
             ];
             // Request flavours in API
             context.commit('setAvailableFlavours', flavours);
+        },
+        clear: function(context) {
+            context.commit('setPizzas', []);
+            context.commit('setPaymentMethod', '');
+            context.commit('setChangeFor', 0);
+            context.commit('setLastPizzaId', 0);
+            this.dispatch('clearPizza');
         },
         clearPizza: function(context) {
             const pizzaId = this.state.lastPizzaId + 1;
@@ -166,6 +191,7 @@ const store = new Vuex.Store({
             }
             return Object.values(state.current.flavours).reduce((previous, obj) => previous + obj , 0)
         },
-        payment: (state) => state.payment
+        payment: (state) => state.payment,
+        pizzas: (state) => state.pizzas
     }
 })

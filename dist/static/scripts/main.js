@@ -86,6 +86,9 @@ const app = new Vue({
     computed: {
         canGoBack: function() { 
             return window.history.length > 1
+        },
+        hasPizzas: function() {
+            return this.$store.getters.pizzas.length > 0;
         }
     },
     methods: {

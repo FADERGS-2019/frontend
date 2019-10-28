@@ -10,6 +10,13 @@ const StartPage = {
         goCombos: function() {
             this.$router.push('/combos');
         }
+    },
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Iniciando',
+            subtitle: ''
+        });   
     }
 };
 
@@ -31,7 +38,10 @@ const SizesPage = {
     },
     mounted: function()
     {
-        // this.$store.dispatch('getSizes');   
+        this.$store.dispatch('setHeader', {
+            title: 'Tamanhos',
+            subtitle: ''
+        });   
     }
 };
 
@@ -57,6 +67,15 @@ const FlavoursPage = {
             const currentPizza = this.$store.getters.currentPizza;            
             return (flavourName in currentPizza.flavours) ? currentPizza.flavours[flavourName] : 0;
         }
+    },
+    mounted: function()
+    {        
+        const flavoursAmount = this.$store.getters.currentPizza.maxFlavours;
+        const flavourSuffix = flavoursAmount > 1 ? 'sabores' : 'sabor';
+        this.$store.dispatch('setHeader', {
+            title: 'Sabores',
+            subtitle: 'Escolha até ' + flavoursAmount + ' ' + flavourSuffix + '!'
+        });   
     }
 };
 
@@ -75,7 +94,6 @@ const FlavoursFooter = {
         }
     }
 };
-
 
 const FlavoursAmountPage = { 
     template: '#flavours-amount-page-template',
@@ -97,7 +115,10 @@ const FlavoursAmountPage = {
         }     
     },
     mounted: function() {
-          
+        this.$store.dispatch('setHeader', {
+            title: 'Quantidade de sabores',
+            subtitle: ''
+        });   
     }
 };
 
@@ -112,6 +133,13 @@ const FlavoursAmountFooter = {
 
 const PostBuildPage = { 
     template: '#post-build-page-template',
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Concluído',
+            subtitle: ''
+        });   
+    }
 };
 
 const PostBuildFooter = {
@@ -150,13 +178,17 @@ const DeliveryPage = {
             const isValid = _.every(fields, (value) => !_.isEmpty(value));
             
             if (isValid) {
-                console.log("ok")
+                this.$router.push('/pagamento')
                 return true;
-            }
-            
-            console.log("nope")            
-            
+            }                        
         }
+    },
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Entrega',
+            subtitle: 'Dados de entrega'
+        });   
     }
 };
 
@@ -190,9 +222,53 @@ const PaymentPage = {
                 this.$store.dispatch('setChangeFor', value);
             }
         }
+    },    
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Pagamento',
+            subtitle: 'Escolha o método de pagamento'
+        });   
     }
 };
-const PaymentFooter = { template: '#payment-footer-template' };
+const PaymentFooter = { 
+    template: '#payment-footer-template',    
+    data: function() {
+        return {
+            isProcessing: false
+        }
+    },
+    methods: {
+        nextPage: function() {
+            this.isProcessing = true;
+            axios.post('/api/order')
+                .then((response) => {
+                    this.$store.dispatch('clear')                    
+                    this.$router.push('/finalizado');                   
+                });                
+        }
+    }
+};
+
+
+const PostPaymentPage = {
+    template: '#post-payment-page-template',
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Finalizado',
+            subtitle: 'Obrigado por nos escolher!'
+        });   
+    }
+};
+const PostPaymentFooter = {
+    template: '#post-payment-footer-template',
+    methods: {
+        restart: function() {            
+            this.$router.push('/');            
+        }
+    }
+};
 
 const CombosPage = { template: '#combos-page-template' };
 
@@ -244,6 +320,13 @@ const routes = [
         components: {
             default: PaymentPage,
             footer: PaymentFooter
+        }
+    },
+    {
+        path: '/finalizado',
+        components: {
+            default: PostPaymentPage,
+            footer: PostPaymentFooter
         }
     },
     {

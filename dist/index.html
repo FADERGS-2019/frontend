@@ -20,12 +20,17 @@
                 </a>
             </nav>
             <div>
-                <span>Título</span>
-                <small class="is-muted">Subtitulo</small>
+                <span>{{ $store.state.title }}</span>
+                <small class="is-muted">{{ $store.state.subtitle }}</small>
             </div>
             <nav>
-                <a href="#" class="button">
-                    <i class="far fa-shopping-basket"></i>
+                <a href="#" class="button" style="position: relative;">
+                    <i class="far fa-shopping-basket"></i>                    
+                    <span v-if="hasPizzas" class="badge">
+                        <small>
+                            {{ $store.getters.pizzas.length }}
+                        </small>
+                    </span>
                 </a>
             </nav>
         </header>
@@ -158,7 +163,9 @@
     <script type="text/x-template" id="flavours-amount-page-template">
         <main style="text-align: center">            
             <h3>Quantos sabores você deseja?</h3>
-            <app-counter step="1" :value="$store.getters.currentPizza.maxFlavours" @add="add" @remove="remove"></app-counter>            
+            <div style="margin-top: 2em">
+                <app-counter step="1" :value="$store.getters.currentPizza.maxFlavours" @add="add" @remove="remove"></app-counter>            
+            </div>            
         </main>     
     </script>
 
@@ -183,8 +190,8 @@
     </script>
 
     <script type="text/x-template" id="post-build-page-template">
-        <main>            
-            <h3>Pizza adiciona!</h3>
+        <main style="text-align: center">            
+            <h3>Pizza adicionada!</h3>
             <p>
                 Deseja adicionar mais uma pizza ao pedido?
             </p>
@@ -259,7 +266,27 @@
 
     <script type="text/x-template" id="payment-footer-template">
         <div style="margin: 0 auto">
-            <button type="submit" form="payment-form" class="button button--solid">Pagar e Finalizar</button>
+            <button type="submit" form="payment-form" class="button button--solid" @click="nextPage">
+                <span v-if="!isProcessing">Pagar e Finalizar</span>
+                <span v-else>
+                    <i class="far fa-spinner-third fa-spin"></i>
+                </span>
+            </button>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="post-payment-page-template">
+        <main style="text-align: center">                        
+           <h2>Pedido finalizado!</h2>
+           <p>Seu pedido deve chegar até você daqui a pouco!</p>
+        </main>
+    </script>
+
+    <script type="text/x-template" id="post-payment-footer-template">
+        <div style="margin: 0 auto">
+            <button type="submit" form="payment-form" class="button button--solid" @click="restart">
+                Página Inicial
+            </button>
         </div>
     </script>
 
@@ -297,9 +324,11 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.1/dist/vuex.js"></script>
     <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/vuex-persist"></script>
     <script src="/static/scripts/lib.js"></script>
     <script src="/static/scripts/state.js"></script>
     <script src="/static/scripts/routes.js"></script>
