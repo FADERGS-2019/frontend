@@ -94,12 +94,18 @@ const app = new Vue({
     methods: {
         goBack: function() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+        },
+        goCart: function() {
+            this.$router.push('/carrinho');
         }
     },
     mounted: function() {
         this.$store.dispatch('fetchSizes');
         this.$store.dispatch('fetchFlavours');
-        this.$store.dispatch('clearPizza');
+        if (_.isEmpty(this.$store.getters.currentPizza)) {
+            console.log("Pizza is empty, clearing...");
+            this.$store.dispatch('clearPizza');
+        }        
         console.log('Ready');
     }
 });

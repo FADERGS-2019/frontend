@@ -24,7 +24,7 @@
                 <small class="is-muted">{{ $store.state.subtitle }}</small>
             </div>
             <nav>
-                <a href="#" class="button" style="position: relative;">
+                <a class="button" style="position: relative;" @click="goCart">
                     <i class="far fa-shopping-basket"></i>                    
                     <span v-if="hasPizzas" class="badge">
                         <small>
@@ -201,12 +201,13 @@
     <script type="text/x-template" id="post-build-footer-template">
         <div style="margin: 0 auto; text-align: center">
             <button class="button button--solid" @click="goNewPizza">Adicionar mais</button>
-            <button class="button button--solid" @click="goDelivery">Ir para entrega</button>
+            <button class="button button--solid" @click="goCart">Continuar</button>
         </div>            
     </script>
 
     <script type="text/x-template" id="delivery-page-template">
         <main style="height: 100%; display: flex; flex-direction: column;">            
+            <p style="text-align: center; margin-bottom: 1em;">Antes de começar, nos diga qual o endereço de entrega do pedido.</p>
             <form id="delivery-form" name="delivery-form" action="" style="flex-grow: 1" @submit="validateForm">
                 <div class="field">
                     <label class="field__label" for="">CEP</label>
@@ -239,7 +240,7 @@
 
     <script type="text/x-template" id="delivery-footer-template">
         <div style="margin: 0 auto">
-            <button type="submit" form="delivery-form" class="button button--solid">Ir para Pagamento</button>
+            <button type="submit" form="delivery-form" class="button button--solid" @click="goStart">Vamos lá</button>
         </div>            
     </script>
 
@@ -286,6 +287,45 @@
         <div style="margin: 0 auto">
             <button type="submit" form="payment-form" class="button button--solid" @click="restart">
                 Página Inicial
+            </button>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="cart-page-template">
+        <main>
+            <h2 class="heading"></h2>
+            <div>
+
+                <app-card v-for="pizza in pizzas" :key="pizza.id">
+                    <div class="content__inner" style="flex-">
+                        <div>
+                            <h3 class="heading">Pizza {{ pizza.size.name }}</h3>
+                            <p>{{ formatFlavours(pizza) }}</p>                        
+                            <p>{{ formatPrice(pizza.price) }}</p>    
+                        </div>
+                        <div>
+                            <button class="button button--primary" style="width: 2em" @click="removePizza(pizza)">
+                                <i class="far fa-times"></i>
+                            </button>                        
+                        </div>
+                    </div>                    
+                </app-card>
+                <p style="text-align: center" v-show="$store.getters.pizzas.length == 0">
+                    Não existem itens no seu carrinho.
+                </p>
+            </div>
+        </main>
+    </script>
+
+    <script type="text/x-template" id="cart-footer-template">
+        <div style="margin: 0 auto">
+            <button type="submit" 
+                    form="payment-form" 
+                    class="button button--solid" 
+                    @click="goPayment"
+                    :disabled="!canContinue"
+                    >
+                Finalizar
             </button>
         </div>
     </script>

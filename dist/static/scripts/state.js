@@ -84,7 +84,7 @@ const store = new Vuex.Store({
                     description: "Lorem ipsum dollor sit amet."
                 },
                 {
-                    name: "Calabre",
+                    name: "Calabresa",
                     description: "Lorem ipsum dollor sit amet."
                 },
                 {
@@ -120,16 +120,22 @@ const store = new Vuex.Store({
                 id: pizzaId,
                 flavours: {},
                 size: null,
-                maxFlavours: 1
+                maxFlavours: 1,
+                price: 0
             };
             context.commit('setLastPizzaId', pizzaId);
             context.commit('setPizza', emptyPizza);
         },
         savePizza: function(context) {
-            const pizza = _.clone(this.getters.currentPizza, isDeep=true); 
+            const pizza = _.clone(this.getters.currentPizza, isDeep=true);
+            pizza.price = pizza.size.price;
             const pizzas = this.state.pizzas.filter((p) => p.id != pizza.id);
             pizzas.push(pizza);
             context.commit('setPizzas', pizzas);                        
+        },
+        removePizza: function(context, pizza) {                        
+            const pizzas = this.state.pizzas.filter((p) => p.id != pizza.id);            
+            context.commit('setPizzas', pizzas);
         },
         setSize: function(context, size) {
             const pizza = _.clone(this.getters.currentPizza, isDeep=true);

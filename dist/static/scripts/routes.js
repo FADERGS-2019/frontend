@@ -145,11 +145,11 @@ const PostBuildPage = {
 const PostBuildFooter = {
     template: '#post-build-footer-template',
     methods: {
-        goDelivery: function() {
-            this.$router.push('/entrega');
+        goCart: function() {
+            this.$router.push('/carrinho');
         },
         goNewPizza: function() {
-            this.$router.push('/');
+            this.$router.push('/iniciar');
         }
     }
 };
@@ -166,8 +166,12 @@ const DeliveryPage = {
         }
     },
     methods: {
+        onlyNumbers: function(value) {
+            // Verify numbers here...!
+        },
         validateForm: function(event) {
             event.preventDefault();
+
             const fields = [
                 this.zipcode,
                 this.address,
@@ -175,7 +179,11 @@ const DeliveryPage = {
                 this.complement,
                 this.phone
             ];
-            const isValid = _.every(fields, (value) => !_.isEmpty(value));
+            
+            let isValid = _.every(fields, (value) => !_.isEmpty(value));
+
+            // Verifica se CEP é válido(lodash)
+            isValid = (this.zipcode.length == 8) && (this.onlyNumbers(this.zipcode));
             
             if (isValid) {
                 this.$router.push('/pagamento')
@@ -195,6 +203,9 @@ const DeliveryPage = {
 const DeliveryFooter = {
     template: '#delivery-footer-template',
     methods: {
+        goStart: function() {
+            this.$router.push('/iniciar');
+        }
     }
 };
 
@@ -231,6 +242,7 @@ const PaymentPage = {
         });   
     }
 };
+
 const PaymentFooter = { 
     template: '#payment-footer-template',    
     data: function() {
@@ -261,6 +273,7 @@ const PostPaymentPage = {
         });   
     }
 };
+
 const PostPaymentFooter = {
     template: '#post-payment-footer-template',
     methods: {
@@ -270,6 +283,65 @@ const PostPaymentFooter = {
     }
 };
 
+const CartPage = {
+    template: '#cart-page-template',
+    methods: {
+        formatFlavours: function(pizza) {
+            let index = 0;
+            return _.reduce(pizza.flavours, (prev, value, key) => {                    
+                console.log(index);
+                index ++;            
+                const formated = value + 'x ' + key;                         
+                
+                if (index == 1) {
+                    return formated;
+                } else {
+                    if (index == _.size(pizza.flavours)) {
+                        return prev + " e " + formated;
+                    }
+                }
+                return prev + ', ' + formated;
+            }, '')
+        },
+        formatPrice: function(value) {
+            return "R$ " + value.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                currency: 'BRL'
+            });
+        },
+        removePizza: function(pizza) {
+            this.$store.dispatch('removePizza', pizza);
+        }
+    },
+    computed: {
+        pizzas: function() {
+            return this.$store.getters.pizzas;
+        }  
+    },
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Carrinho',
+            subtitle: 'Pedidos até agora'
+        });   
+    }
+};
+
+const CartFooter = {
+    template: '#cart-footer-template',
+    methods: {
+        goPayment: function() {
+            this.$router.push('/pagamento');
+        }
+    },
+    computed: {
+        canContinue: function() {
+            return this.$store.getters.pizzas.length > 0;
+        }
+    }
+};
+
+
 const CombosPage = { template: '#combos-page-template' };
 
 
@@ -277,7 +349,14 @@ const routes = [
     { 
         path: '/', 
         components: {
-            default: StartPage            
+            default: DeliveryPage,
+            footer: DeliveryFooter        
+        }
+    },
+    { 
+        path: '/iniciar',
+        components: {
+            default: StartPage          
         }
     },
     {
@@ -327,6 +406,13 @@ const routes = [
         components: {
             default: PostPaymentPage,
             footer: PostPaymentFooter
+        }
+    },
+    {
+        path: '/carrinho',
+        components: {
+            default: CartPage ,
+            footer: CartFooter           
         }
     },
     {
