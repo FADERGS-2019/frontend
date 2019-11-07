@@ -10,6 +10,14 @@ const store = new Vuex.Store({
         availableSizes: [],      
         availableFlavours: [],
         lastPizzaId: 0,
+        delivery: {
+            zipcode: "",
+            address: "",
+            number: "",
+            complement: "",
+            name: "",
+            email: ""
+        },
         pizzas: [],
         current: {},
         payment: {
@@ -45,6 +53,15 @@ const store = new Vuex.Store({
         },
         setHeaderSubtitle: function(state, value) {
             state.subtitle = value;
+        },
+        setDelivery: function(state, data) {
+            state.delivery.name = data.name;
+            state.delivery.email = data.email;
+            state.delivery.phone = data.phone;
+            state.delivery.address = data.address;
+            state.delivery.zipcode = data.zipcode;
+            state.delivery.complement = data.complement;
+            state.delivery.number = data.number;            
         }
     },
     actions: {
@@ -185,6 +202,9 @@ const store = new Vuex.Store({
             if (value > 0) {
                 context.commit('setChangeFor', value);
             }
+        },
+        setDelivery: function(context, deliveryDetails) {
+            context.commit('setDelivery', deliveryDetails);
         }
     },
     getters: {
@@ -198,6 +218,50 @@ const store = new Vuex.Store({
             return Object.values(state.current.flavours).reduce((previous, obj) => previous + obj , 0)
         },
         payment: (state) => state.payment,
-        pizzas: (state) => state.pizzas
+        pizzas: (state) => state.pizzas,
+        backendRequest: (state) => {
+
+            const deliveryDetails = {
+                cep: state.delivery.zipcode,
+                rua: state.delivery.address,
+                numero: state.delivery.number,
+                nome: "<NotImplementetYet>",
+                email: "<NotImplementetYet>",
+                telefone: state.delivery.phone,
+                complemento: state.delivery.complement
+            }
+
+            const itemsDetails = _.map(state.pizzas, (pizza) => {
+                return {
+                    tipo: "pizza",
+                    tamanho: pizza.size.name,
+                    borda: "",
+                    valor: pizza.price,
+                    sabores: _.map(pizza.flavours, (value, key) => {
+                        return {
+                            nome: key,
+                            quantidade: value
+                        }
+                    })
+                }
+            });
+
+            const paymentDetails = {
+                total: _.reduce(state.pizzas, (prev, curr) => prev + curr.price, 0),
+                tipo: state.payment.method == "card" ? "cartao" : "dinheiro",
+                bandeira: "TANTO_FAZ",
+                metodo: "TANTO_FAZ",
+                troco: state.changeFor != null ? state.changeFor : 0
+            };
+
+            const request = {
+                entrega: deliveryDetails,
+                itens: itemsDetails,
+                pagamento: paymentDetails
+            }
+            
+            console.log(request);
+            return request;
+        }
     }
 })

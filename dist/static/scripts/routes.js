@@ -183,10 +183,17 @@ const DeliveryPage = {
             let isValid = _.every(fields, (value) => !_.isEmpty(value));
 
             // Verifica se CEP é válido(lodash)
-            isValid = (this.zipcode.length == 8) && (this.onlyNumbers(this.zipcode));
+            // isValid = (this.zipcode.length == 8) && (this.onlyNumbers(this.zipcode));
             
             if (isValid) {
-                this.$router.push('/pagamento')
+                this.$store.dispatch('setDelivery', {
+                    zipcode: this.zipcode,
+                    address: this.address,
+                    number: this.number,
+                    complement: this.complement,
+                    phone: this.phone
+                });
+                this.$router.push('/iniciar');
                 return true;
             }                        
         }
@@ -252,10 +259,11 @@ const PaymentFooter = {
     },
     methods: {
         nextPage: function() {
-            this.isProcessing = true;
+            this.isProcessing = true;            
+            const request = this.$store.getters.backendRequest;            
             axios.post('/api/order')
                 .then((response) => {
-                    this.$store.dispatch('clear')                    
+                    // this.$store.dispatch('clear')                    
                     this.$router.push('/finalizado');                   
                 });                
         }
