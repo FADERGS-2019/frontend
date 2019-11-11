@@ -213,13 +213,13 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;    
-    min-height: 4em;
+    min-height: 5em;
 
     display: flex;
     align-items: center;
     justify-content: flex-start;
 
-    background-color: white;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 40%);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }

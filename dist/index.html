@@ -150,9 +150,6 @@
                 >
                 </app-size-card>
             </div>
-            <footer class="footer">
-                <button class="button button--solid">Continuar</button>
-            </footer>
         </main>
     </script>
 
@@ -207,12 +204,24 @@
 
     <script type="text/x-template" id="delivery-page-template">
         <main style="height: 100%; display: flex; flex-direction: column;">            
-            <p style="text-align: center; margin-bottom: 1em;">Antes de começar, nos diga qual o endereço de entrega do pedido.</p>
+            <p style="text-align: center; margin-bottom: 1em;">Antes de começar, nos diga quem você é e qual o endereço de entrega do pedido.</p>
             <form id="delivery-form" name="delivery-form" action="" style="flex-grow: 1" @submit="validateForm">
+                <div class="field">
+                    <label class="field__label" for="">Nome</label>
+                    <input type="text" class="field__input" v-model="name" placeholder="Paulo da Silva"> 
+                </div>
+                <div class="field">
+                    <label class="field__label" for="">E-mail</label>
+                    <input type="email" class="field__input" v-model="email" placeholder="paulo@adoropizza.com.br"> 
+                </div>
+                <div class="field">
+                    <label class="field__label" for="">CPF</label>
+                    <input type="text" class="field__input" v-model="cpf" placeholder="778.898.013-78"> 
+                </div>
                 <div class="field">
                     <label class="field__label" for="">CEP</label>
                     <input type="text" class="field__input" v-model="zipcode" placeholder="90010-300"> 
-                </div>
+                </div>                
                 <div class="field">
                     <label class="field__label" for="">Endereço</label>
                     <input type="text" class="field__input" v-model="address" placeholder="Rua Fernando Machado"> 

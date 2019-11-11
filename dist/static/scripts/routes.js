@@ -162,7 +162,10 @@ const DeliveryPage = {
             address: '',
             number: '',
             complement: '',
-            phone: ''
+            phone: '',
+            email: '',
+            name: '',
+            cpf: ''
         }
     },
     methods: {
@@ -177,7 +180,10 @@ const DeliveryPage = {
                 this.address,
                 this.number,
                 this.complement,
-                this.phone
+                this.phone,
+                this.email,
+                this.name,
+                this.cpf
             ];
             
             let isValid = _.every(fields, (value) => !_.isEmpty(value));
@@ -191,7 +197,10 @@ const DeliveryPage = {
                     address: this.address,
                     number: this.number,
                     complement: this.complement,
-                    phone: this.phone
+                    phone: this.phone,
+                    email: this.email,
+                    name: this.name,
+                    cpf: this.cpf
                 });
                 this.$router.push('/iniciar');
                 return true;
@@ -261,11 +270,14 @@ const PaymentFooter = {
         nextPage: function() {
             this.isProcessing = true;            
             const request = this.$store.getters.backendRequest;            
-            axios.post('/api/order')
+            axios.post('/api/order', request)
                 .then((response) => {
-                    // this.$store.dispatch('clear')                    
+                    this.$store.dispatch('clear')                    
                     this.$router.push('/finalizado');                   
-                });                
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
         }
     }
 };

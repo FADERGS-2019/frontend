@@ -16,7 +16,8 @@ const store = new Vuex.Store({
             number: "",
             complement: "",
             name: "",
-            email: ""
+            email: "",
+            cpf: ""        
         },
         pizzas: [],
         current: {},
@@ -61,7 +62,8 @@ const store = new Vuex.Store({
             state.delivery.address = data.address;
             state.delivery.zipcode = data.zipcode;
             state.delivery.complement = data.complement;
-            state.delivery.number = data.number;            
+            state.delivery.number = data.number;                   
+            state.delivery.cpf = data.cpf;                   
         }
     },
     actions: {
@@ -225,10 +227,11 @@ const store = new Vuex.Store({
                 cep: state.delivery.zipcode,
                 rua: state.delivery.address,
                 numero: state.delivery.number,
-                nome: "<NotImplementetYet>",
-                email: "<NotImplementetYet>",
+                nome: state.delivery.name,
+                email: state.delivery.email,
                 telefone: state.delivery.phone,
-                complemento: state.delivery.complement
+                complemento: state.delivery.complement,
+                cpf: state.delivery.cpf
             }
 
             const itemsDetails = _.map(state.pizzas, (pizza) => {
@@ -260,7 +263,7 @@ const store = new Vuex.Store({
                 pagamento: paymentDetails
             }
             
-            console.log(request);
+            // console.log(request);
             return request;
         }
     }
