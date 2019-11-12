@@ -192,18 +192,36 @@ const DeliveryPage = {
             // isValid = (this.zipcode.length == 8) && (this.onlyNumbers(this.zipcode));
             
             if (isValid) {
-                this.$store.dispatch('setDelivery', {
-                    zipcode: this.zipcode,
-                    address: this.address,
-                    number: this.number,
-                    complement: this.complement,
-                    phone: this.phone,
+                const payload = {
+                    cep: this.zipcode,
+                    rua: this.address,
+                    numero: this.number,
+                    nome: this.name,
                     email: this.email,
-                    name: this.name,
+                    telefone: this.phone,
+                    complemento: this.complement,
                     cpf: this.cpf
-                });
-                this.$router.push('/iniciar');
-                return true;
+                };
+
+                axios.post('http://localhost:51627/api/Clientes/post', payload)
+                    .then((response) => {
+                        this.$store.dispatch('setDelivery', {
+                            zipcode: this.zipcode,
+                            address: this.address,
+                            number: this.number,
+                            complement: this.complement,
+                            phone: this.phone,
+                            email: this.email,
+                            name: this.name,
+                            cpf: this.cpf
+                        });
+                        
+                        return true;
+                    })
+                    .catch((error) => console.log(error))
+                    .finally(() => {
+                        this.$router.push('/quantidade-de-sabores');
+                    });
             }                        
         }
     },
