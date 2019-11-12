@@ -220,7 +220,7 @@ const DeliveryPage = {
                     })
                     .catch((error) => console.log(error))
                     .finally(() => {
-                        this.$router.push('/quantidade-de-sabores');
+                        this.$router.push('/tamanhos');
                     });
             }                        
         }
@@ -354,7 +354,10 @@ const CartPage = {
     computed: {
         pizzas: function() {
             return this.$store.getters.pizzas;
-        }  
+        },
+        orderTotal: function() {
+            return _.reduce(this.pizzas, (prev, curr) => prev + curr.price, 10);
+        }
     },
     mounted: function()
     {
