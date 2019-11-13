@@ -1,14 +1,14 @@
 :root {
     --background-color: #fafafa;
     --text-color: #333;    
-    --button-primary-color: #f4442e;
-    --button-primary-color-disabled: #cf6f62;
+    --button-primary-color: #d9621e;
+    --button-primary-color-disabled: #c7825a;
 
-    --primary-color: #f4442e;
-    --secondary-color: #fc9e4f;
+    --primary-color: #d9621e;
+    --secondary-color: #af9604;
 
     --navigation-bar-color: white;
-    --navigation-bar-color-dark: #020122;
+    --navigation-bar-color-dark: #8e1719;
 }
 
 *, *:before, *:after {

@@ -434,7 +434,7 @@ const OrdersPage = {
         });
         
         this.fetchOrders();
-        this.fetchInterval = setInterval(this.fetchOrders, 5000);
+        // this.fetchInterval = setInterval(this.fetchOrders, 5000);
     }
 };
 
