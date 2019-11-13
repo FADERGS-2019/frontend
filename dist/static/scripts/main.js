@@ -26,12 +26,7 @@ Vue.component('app-flavour-card', {
                 amount: event.amount
             });            
         }
-    },
-    // computed: {
-    //     amount: function() {
-    //         return this.amount
-    //     }
-    // }
+    }
 });
 
 Vue.component('app-size-card', {
@@ -72,6 +67,44 @@ Vue.component('app-payment-card', {
     data: function() {
         return {
 
+        }
+    }
+});
+
+Vue.component('app-order-card', {
+    template: '#app-order-card-template',
+    props: ['order'],
+    data: function() {
+        return {
+            showDetails: false
+        }
+    },
+    methods: {
+        toggleDetails: function() { this.showDetails = !this.showDetails },
+        formatFlavours: function(flavours) {
+            let index = 0;
+            return _.reduce(flavours, (prev, value, key) => {                
+                index ++;            
+                const formated = value + 'x ' + key;                         
+                
+                if (index == 1) {
+                    return formated;
+                } else {
+                    if (index == _.size(flavours)) {
+                        return prev + " e " + formated;
+                    }
+                }
+                return prev + ', ' + formated;
+            }, '')
+        },
+        formatPrice: function(value) {
+            return "R$ " + value.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                currency: 'BRL'
+            });
+        },
+        totalPrice: function(order) {
+            return _.reduce(order.itens, (prev, curr) => prev + curr.valor, 0);
         }
     }
 });

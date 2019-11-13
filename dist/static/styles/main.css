@@ -281,3 +281,18 @@ input {
     border-radius: 50%;
     background-color: var(--secondary-color);
 }
+
+ul, ol {
+    
+    margin: 0;
+    padding: 0;
+}
+
+ul.no-style {
+    list-style: none;
+}
+
+ul > li {
+    padding: 0;
+    margin: 0;
+}

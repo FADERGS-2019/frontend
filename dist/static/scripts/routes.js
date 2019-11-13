@@ -382,6 +382,62 @@ const CartFooter = {
     }
 };
 
+const OrdersPage = {
+    template: '#orders-page-template',
+    data: function() {
+        return {
+            fetchInterval: undefined,
+            orders: []
+        }
+    },
+    methods: {
+        formatFlavours: function(flavours) {
+            let index = 0;
+            return _.reduce(flavours, (prev, value, key) => {                    
+                console.log(index);
+                index ++;            
+                const formated = value + 'x ' + key;                         
+                
+                if (index == 1) {
+                    return formated;
+                } else {
+                    if (index == _.size(flavours)) {
+                        return prev + " e " + formated;
+                    }
+                }
+                return prev + ', ' + formated;
+            }, '')
+        },
+        formatPrice: function(value) {
+            return "R$ " + value.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                currency: 'BRL'
+            });
+        },
+        removeOrder: function(order) {
+            this.$store.dispatch('removeOrder', order);
+        },
+        fetchOrders: function() {
+            console.log('Fetching new orders...');
+            axios.get('/api/orders')
+                .then((response) => {
+                    this.orders = response.data;
+                    // this.$store.dispatch('setOrders', response.data);
+                });
+        }
+    },
+    mounted: function()
+    {
+        this.$store.dispatch('setHeader', {
+            title: 'Pedidos',
+            subtitle: 'Pedidos pendentes'
+        });
+        
+        this.fetchOrders();
+        this.fetchInterval = setInterval(this.fetchOrders, 5000);
+    }
+};
+
 
 const CombosPage = { template: '#combos-page-template' };
 
@@ -454,6 +510,12 @@ const routes = [
         components: {
             default: CartPage ,
             footer: CartFooter           
+        }
+    },
+    {
+        path: '/pedidos',
+        components: {
+            default: OrdersPage
         }
     },
     {

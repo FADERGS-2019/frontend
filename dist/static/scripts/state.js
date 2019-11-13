@@ -25,7 +25,8 @@ const store = new Vuex.Store({
             method: '',
             cardType: '',
             changeFor: 0
-        }    
+        },
+        orders: []    
     },
     mutations: {
         setAvailableSizes: function(state, sizes) {
@@ -64,6 +65,9 @@ const store = new Vuex.Store({
             state.delivery.complement = data.complement;
             state.delivery.number = data.number;                   
             state.delivery.cpf = data.cpf;                   
+        },
+        setOrders: function(state, orders) {
+            state.orders = orders;
         }
     },
     actions: {
@@ -207,7 +211,10 @@ const store = new Vuex.Store({
         },
         setDelivery: function(context, deliveryDetails) {
             context.commit('setDelivery', deliveryDetails);
-        }
+        },
+        setOrders: function(context, orders) {
+            context.commit('setOrders', orders);
+        }       
     },
     getters: {
         availableFlavours: (state) => state.availableFlavours,
@@ -265,6 +272,7 @@ const store = new Vuex.Store({
             
             // console.log(request);
             return request;
-        }
+        },
+        orders: (state) => state.orders
     }
 })

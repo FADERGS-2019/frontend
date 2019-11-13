@@ -117,6 +117,44 @@
         </div>
     </script>
 
+    <script type="text/x-template" id="app-order-card-template">
+        <div class="card">            
+            <div class="card__content">
+                <h3 style="margin-bottom: 0.25rem">Pedido #{{ order.id }}</h3>
+                <div class="content__inner">                                        
+                    <div>
+                        <ul>                            
+                            <li v-for="item in order.itens" :key="item.id">                                
+                                {{ formatFlavours(item.sabores) }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <button class="button button--primary" style="width: 2em" @click="toggleDetails">
+                            <i class="far fa-info"></i>
+                        </button>                
+                        <button class="button button--primary" style="width: 2em">
+                            <i class="far fa-check"></i>
+                        </button>                        
+                    </div>                    
+                </div>
+                <div v-if="showDetails" style="margin-top: 1em; background-color: rgb(236, 236, 236); border: 1px solid lightgray; border-radius: 1px; padding: 1em">
+                    <ul class="no-style">
+                        <li>Nome: {{ order.entrega.nome }}</li>
+                        <li>Contato: {{ order.entrega.telefone }}</li>
+                        <li>Endereço: {{ order.entrega.rua }}</li>
+                        <li>Complemento: {{ order.entrega.complemento }}</li>
+                        <li>Pagamento com <strong>{{ order.pagamento.tipo == 'dinheiro' ? 'Dinheiro' : 'Cartão de Crédito' }}</strong></li>
+                        <template v-if="order.pagamento.tipo == 'dinheiro'">
+                            <li>Troco para {{ formatPrice(order.pagamento.troco) }}</li>
+                        </template>
+                        <li>Total: {{ formatPrice(totalPrice(order)) }}</li>
+                    </ul>
+                </div> 
+            </div>
+        </div>
+    </script>
+
     <!-- Pages -->
 
     <script type="text/x-template" id="start-page-template">
@@ -342,6 +380,19 @@
                 Finalizar
             </button>
         </div>
+    </script>
+
+    <script type="text/x-template" id="orders-page-template">
+        <main>
+            <h2 class="heading"></h2>
+            <div>
+                <app-order-card v-for="order in orders" :key="order.id" :order="order">                                   
+                </app-order-card>
+                <p style="text-align: center" v-show="orders.length == 0">
+                    Não existem pedidos até agora.
+                </p>
+            </div>
+        </main>
     </script>
 
     <script type="text/x-template" id="combos-page-template">

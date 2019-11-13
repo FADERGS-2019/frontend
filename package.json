@@ -19,6 +19,10 @@
   "homepage": "https://github.com/FADERGS-2019/frontend#readme",
   "devDependencies": {
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "nodemon": "^1.19.3"
+  },
+  "dependencies": {
+    "uuid": "^3.3.3"
   }
 }
