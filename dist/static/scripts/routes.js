@@ -288,7 +288,7 @@ const PaymentFooter = {
         nextPage: function() {
             this.isProcessing = true;            
             const request = this.$store.getters.backendRequest;            
-            axios.post('/api/order', request)
+            axios.post('http://localhost:51627/api/Pedidos/post', request)
                 .then((response) => {
                     this.$store.dispatch('clear')                    
                     this.$router.push('/finalizado');                   
