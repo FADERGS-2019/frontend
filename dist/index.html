@@ -125,7 +125,7 @@
                     <div>
                         <ul>                            
                             <li v-for="item in order.itens" :key="item.id">                                
-                                {{ formatFlavours(item.sabores) }}
+                                {{item.tamanho}}: {{ formatFlavours(item.sabores) }}
                             </li>
                         </ul>
                     </div>
