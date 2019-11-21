@@ -49,7 +49,8 @@ const SizePageFooter = {
     template: '#sizes-page-footer-template',
     methods: {
         nextPage: function() {            
-            this.$router.push('/quantidade-de-sabores');
+            this.$store.dispatch('setFlavourMaxAmount', 4);
+            this.$router.push('/sabores');
         }
     },
     computed: {
@@ -149,7 +150,7 @@ const PostBuildFooter = {
             this.$router.push('/carrinho');
         },
         goNewPizza: function() {
-            this.$router.push('/iniciar');
+            this.$router.push('/tamanhos');
         }
     }
 };
@@ -287,7 +288,8 @@ const PaymentFooter = {
     methods: {
         nextPage: function() {
             this.isProcessing = true;            
-            const request = this.$store.getters.backendRequest;            
+            const request = this.$store.getters.backendRequest;   
+            console.log(request) ;        
             axios.post('http://localhost:51627/api/Pedidos/post', request)
                 .then((response) => {
                     this.$store.dispatch('clear')                    
@@ -416,10 +418,10 @@ const OrdersPage = {
         },
         removeOrder: function(order) {
             this.$store.dispatch('removeOrder', order);
-        },
+        },        
         fetchOrders: function() {
-            console.log('Fetching new orders...');
-            axios.get('/api/orders')
+            console.log('Fetching new orders...');            
+            axios.get('http://localhost:51627/api/Pedidos/GetNotDone')
                 .then((response) => {
                     this.orders = response.data;
                     // this.$store.dispatch('setOrders', response.data);

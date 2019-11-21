@@ -35,7 +35,7 @@
             </nav>
         </header>
 
-        <div style="padding: 2em; padding-top: 6em; margin-bottom: 4em;">
+        <div class="page-wrapper">
             <router-view></router-view>
         </div>
         <footer>
@@ -209,7 +209,11 @@
     </script>
 
     <script type="text/x-template" id="flavours-page-template">
-        <main>            
+        <main>
+            <div class="carnaval" style="margin-top: 1em; padding: 1em">
+                <h2 style="font-weight: normal; text-align: center">Escolha até <strong>4</strong> sabores</h2>            
+            </div>
+            
             <app-flavour-card 
                 v-for="flavour in $store.state.availableFlavours"
                 :name="flavour.name" 
@@ -252,9 +256,9 @@
                     <label class="field__label" for="">E-mail</label>
                     <input type="email" class="field__input" v-model="email" placeholder="paulo@adoropizza.com.br"> 
                 </div>
-                <div class="field">
+                <div class="field" style="display: none">
                     <label class="field__label" for="">CPF</label>
-                    <input type="text" class="field__input" v-model="cpf" placeholder="778.898.013-78"> 
+                    <input type="text" class="field__input" v-model="cpf" placeholder="778.898.013-78" value="TANTO_FAZ"> 
                 </div>
                 <div class="field">
                     <label class="field__label" for="">CEP</label>
