@@ -133,7 +133,7 @@
                         <button class="button button--primary" style="width: 2em" @click="toggleDetails">
                             <i class="far fa-info"></i>
                         </button>                
-                        <button class="button button--primary" style="width: 2em">
+                        <button class="button button--primary" style="width: 2em" @click="removeOrder">
                             <i class="far fa-check"></i>
                         </button>                        
                     </div>                    
@@ -390,7 +390,7 @@
         <main>
             <h2 class="heading"></h2>
             <div>
-                <app-order-card v-for="order in orders" :key="order.id" :order="order">                                   
+                <app-order-card v-for="order in orders" :key="order.id" :order="order" @removed="fetchOrders">                                   
                 </app-order-card>
                 <p style="text-align: center" v-show="orders.length == 0">
                     Não existem pedidos até agora.

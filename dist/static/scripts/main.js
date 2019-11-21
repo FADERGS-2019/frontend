@@ -81,6 +81,17 @@ Vue.component('app-order-card', {
     },
     methods: {
         toggleDetails: function() { this.showDetails = !this.showDetails },
+        removeOrder: function() {
+            axios.post('http://localhost:51627/api/Pedidos/postdone', {
+                entrega: {
+                    email: this.order.entrega.email
+                },
+                pedidoId: this.order.pedidoId,
+                id: this.order.id
+            }).then((response) => {
+                this.$emit('removed', this.order);                   
+            });
+        },
         formatFlavours: function(flavours) {
             let index = 0;
             return _.reduce(flavours, (prev, value, key) => {                
