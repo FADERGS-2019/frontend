@@ -413,7 +413,7 @@ const OrdersPage = {
         },        
         fetchOrders: function() {
             console.log('Fetching new orders...');            
-            axios.get('http://localhost:3000/api/orders') //http://localhost:51627/api/Pedidos/GetNotDone
+            axios.get('http://localhost:51627/api/Pedidos/GetNotDone')
                 .then((response) => {
                     this.orders = response.data;
                     // this.$store.dispatch('setOrders', response.data);
