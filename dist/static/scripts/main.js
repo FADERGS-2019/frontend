@@ -96,7 +96,7 @@ Vue.component('app-order-card', {
             let index = 0;
             return _.reduce(flavours, (prev, value, key) => {                
                 index ++;            
-                const formated = value + 'x ' + key;                         
+                const formated = value.quantidade + 'x ' + value.nome;                         
                 
                 if (index == 1) {
                     return formated;

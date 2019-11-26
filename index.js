@@ -9,6 +9,7 @@ app.use(express.static('dist', {
 
 const getRandomFlavour = function(maximum=4) {
   return {
+    id: faker.random.number({min: 1, max: 100}),
     nome: faker.random.arrayElement(['Calabresa', 'Marguerita', 'Coração', 'Strognoff', '4 Queijos']),
     quantidade: faker.random.number({min: 1, max: maximum})
   }
@@ -16,14 +17,15 @@ const getRandomFlavour = function(maximum=4) {
 
 const getRandomPizza = function() {
   const size = faker.random.arrayElement(['Grande', 'Media', 'Pequena']);
-  const flavours = {}
+  const flavours = [];
   let flavoursLeft = faker.random.number({min: 1, max: 4});  
   while (flavoursLeft > 0) {
     const flavour = getRandomFlavour(flavoursLeft);
-    if (flavour.nome in flavours) {
-      flavours[flavour.nome] += flavour.quantidade;
+    const existingFlavour = flavours.find(item => item.nome == flavour.nome);
+    if (existingFlavour) {
+      existingFlavour.quantidade += flavour.quantidade;
     } else {
-      flavours[flavour.nome] = flavour.quantidade;
+      flavours.push(flavour);
     }
     flavoursLeft = flavoursLeft - flavour.quantidade;
   }

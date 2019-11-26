@@ -393,23 +393,6 @@ const OrdersPage = {
         }
     },
     methods: {
-        formatFlavours: function(flavours) {
-            let index = 0;
-            return _.reduce(flavours, (prev, value, key) => {                    
-                console.log(index);
-                index ++;            
-                const formated = value + 'x ' + key;                         
-                
-                if (index == 1) {
-                    return formated;
-                } else {
-                    if (index == _.size(flavours)) {
-                        return prev + " e " + formated;
-                    }
-                }
-                return prev + ', ' + formated;
-            }, '')
-        },
         formatPrice: function(value) {
             return "R$ " + value.toLocaleString('pt-BR', {
                 minimumFractionDigits: 2,
