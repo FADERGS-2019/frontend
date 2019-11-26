@@ -166,7 +166,7 @@ const DeliveryPage = {
             phone: '',
             email: '',
             name: '',
-            cpf: ''
+            cpf: 'TANTO_FAZ'
         }
     },
     methods: {
@@ -400,11 +400,20 @@ const OrdersPage = {
             });
         },
         removeOrder: function(order) {
-            this.$store.dispatch('removeOrder', order);
+            console.log('Removendo...')
+            const payload = {
+                entrega: {
+                    email: "asdsad"//order.cliente.email
+                },
+                pedidoId: order.pedidoId,
+                id: order.id
+            }
+            axios.post('http://localhost:51627/api/Pedidos/postdone', payload)
+            this.orders = _.filter(orders, (item) => item.id != order.id)
         },        
         fetchOrders: function() {
             console.log('Fetching new orders...');            
-            axios.get('http://localhost:51627/api/Pedidos/GetNotDone')
+            axios.get('http://localhost:3000/api/orders') //http://localhost:51627/api/Pedidos/GetNotDone
                 .then((response) => {
                     this.orders = response.data;
                     // this.$store.dispatch('setOrders', response.data);
